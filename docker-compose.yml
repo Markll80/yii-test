@@ -1,4 +1,4 @@
-version: '2'
+version: '3.9'
 services:
   # php:
   #   image: yiisoftware/yii2-php:7.4-apache
@@ -9,8 +9,24 @@ services:
   #     - '8000:80'
   web:
     build: .
+    container_name: webapp
     image: my-yii-app:latest
     volumes: 
       - .:/app
     ports:
       - '80:80'
+  db:
+    image: mysql:8
+    container_name: mysql
+    volumes:
+      - mysql_yii:/var/lib/mysql
+      # external: true
+      # - type: volume
+      #   source: mysql_yii
+      #   target: /var/lib/mysql
+    environment: 
+      MYSQL_ROOT_PASSWORD: 'pw'
+
+volumes: 
+  mysql_yii:
+    external: true
